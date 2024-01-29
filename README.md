@@ -117,9 +117,9 @@ degit https://github.com/gsainfoteam/Infoteam-frontend-template.git <프로젝�
   ```shell
   yarn run build
   ```
-  
+
 - 프리뷰
-  
+
   빌드 된 제품이 어떻게 보일지 볼 수 있습니다. 빌드 이후에 실행해 주세요.
 
   ```shell
