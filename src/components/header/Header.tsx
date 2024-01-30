@@ -22,12 +22,12 @@ const Header = () => {
   })();
 
   return (
-    <header className="bg-gray-100 border-b border-gray-200">
-      <div className="container my-auto mx-10 flex justify-between items-start pt-5">
+    <header className="border-b border-gray-200 bg-gray-100">
+      <div className="container mx-10 my-auto flex items-start justify-between pt-5">
         {/* Left Side - Branding */}
         <div className="flex flex-col justify-center align-middle">
-          <div className="flex flex-row mb-4">
-            <img src="./images/logo.svg" alt="logo" className="w-7 mr-3" />
+          <div className="mb-4 flex flex-row">
+            <img src="./images/logo.svg" alt="logo" className="mr-3 w-7" />
             <Link to="/" className="flex items-center">
               <span className="text-xl font-semibold">OPTIMA</span>
             </Link>
@@ -45,14 +45,14 @@ const Header = () => {
                 <Link to={text[1]} key={text[1]}>
                   <li
                     key={text[0]}
-                    className={`nav-item ${currentPage === text[0] ? "active" : ""} pb-2 pl-2 flex-row flex items-center`}
+                    className={`nav-item ${currentPage === text[0] ? "active" : ""} flex flex-row items-center pb-2 pl-2`}
                   >
                     <img
                       src={`./images/${text[1]}_icon.svg`}
                       alt="icon"
-                      className="w-5 mr-1"
+                      className="mr-1 w-5"
                     />
-                    <p className="text-gray-700 hover:text-gray-900 pr-3 pl-1 py-2 rounded-md text-sm font-medium">
+                    <p className="rounded-md py-2 pl-1 pr-3 text-sm font-medium text-gray-700 hover:text-gray-900">
                       {text[0]}
                     </p>
                   </li>
