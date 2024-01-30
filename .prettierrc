@@ -4,5 +4,6 @@
   "semi": true,
   "doubleQuote": true,
   "endOfLine": "auto",
-  "useTabs": false
+  "useTabs": false,
+  "plugins": ["prettier-plugin-tailwindcss"]
 }

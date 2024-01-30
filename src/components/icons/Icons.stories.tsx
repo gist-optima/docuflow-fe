@@ -15,4 +15,6 @@ const Chart: StoryFn<typeof Icons> = (args) => <Icons.Chart />;
 
 const Image: StoryFn<typeof Icons> = (args) => <Icons.Image />;
 
-export { Chart, Default, Document, Image };
+const Kebab: StoryFn<typeof Icons> = (args) => <Icons.Kebab />;
+
+export { Chart, Default, Document, Image, Kebab };
