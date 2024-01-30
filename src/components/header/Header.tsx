@@ -27,7 +27,7 @@ const Header = () => {
         {/* Left Side - Branding */}
         <div className="flex flex-col justify-center align-middle">
           <div className="flex flex-row mb-4">
-            <img src="./logo.svg" alt="logo" className="w-7 mr-3" />
+            <img src="./images/logo.svg" alt="logo" className="w-7 mr-3" />
             <Link to="/" className="flex items-center">
               <span className="text-xl font-semibold">OPTIMA</span>
             </Link>
@@ -42,17 +42,21 @@ const Header = () => {
                 ["검토 요청", "pullrequest"],
                 ["자동화 툴", "tool"],
               ].map((text) => (
-                <li
-                  key={text[0]}
-                  className={`nav-item ${currentPage === text[0] ? "active" : ""} pb-2`}
-                >
-                  <Link
-                    to={text[1]}
-                    className="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium"
+                <Link to={text[1]} key={text[1]}>
+                  <li
+                    key={text[0]}
+                    className={`nav-item ${currentPage === text[0] ? "active" : ""} pb-2 pl-2 flex-row flex items-center`}
                   >
-                    {text[0]}
-                  </Link>
-                </li>
+                    <img
+                      src={`./images/${text[1]}_icon.svg`}
+                      alt="icon"
+                      className="w-5 mr-1"
+                    />
+                    <p className="text-gray-700 hover:text-gray-900 pr-3 pl-1 py-2 rounded-md text-sm font-medium">
+                      {text[0]}
+                    </p>
+                  </li>
+                </Link>
               ))}
             </ul>
           </nav>

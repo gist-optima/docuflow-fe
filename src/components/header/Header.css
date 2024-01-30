@@ -16,5 +16,5 @@
 }
 
 .nav-item.active::after {
-  background: green;
+  background: #59f64b;
 }
