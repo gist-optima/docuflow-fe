@@ -221,6 +221,23 @@ const DownArrow = ({ size = 20, color = "#5F5F5F" }: iconsProps) => {
   );
 };
 
+const UpAngle = ({ size = 23, color = "#5F5F5F" }: iconsProps) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={size}
+      fill={color}
+      viewBox="0 0 23 23"
+    >
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M11.4999 6.70831C11.7541 6.70831 11.9979 6.80928 12.1776 6.989L18.8859 13.6973C19.2601 14.0716 19.2601 14.6784 18.8859 15.0526C18.5117 15.4268 17.9048 15.4268 17.5306 15.0526L11.4999 9.02193L5.46923 15.0526C5.09497 15.4268 4.4882 15.4268 4.11394 15.0526C3.73969 14.6784 3.73969 14.0716 4.11394 13.6973L10.8223 6.989C11.002 6.80928 11.2458 6.70831 11.4999 6.70831Z"
+      />
+    </svg>
+  );
+};
+
 Icons.Document = Document;
 Icons.Chart = Chart;
 Icons.Image = Image;
@@ -232,5 +249,6 @@ Icons.Branch = Branch;
 Icons.Triangle = Triangle;
 Icons.Send = Send;
 Icons.DownArrow = DownArrow;
+Icons.UpAngle = UpAngle;
 
 export default Icons;

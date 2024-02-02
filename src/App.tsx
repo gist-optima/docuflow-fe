@@ -1,6 +1,7 @@
 import { BrowserRouter } from "react-router-dom";
 
 import Header from "./components/header/Header";
+import DocumentPage from "./pages/document/DocumentPage";
 
 function App() {
   return (
@@ -8,8 +9,8 @@ function App() {
       <BrowserRouter>
         <Header />
       </BrowserRouter>
-      <button className={"h-10 w-10 rounded-md bg-slate-100"} />
-      <h1 className="text-3xl font-bold underline">Hello world!</h1>
+
+      <DocumentPage />
     </div>
   );
 }
