@@ -92,7 +92,7 @@ const EditMode = ({ setMode }: EditModeProps) => {
       {showBottomSheet && (
         <div
           className={
-            "fixed bottom-0 left-0 h-full w-full bg-black bg-opacity-50"
+            "fixed bottom-0 left-0 h-[300px] w-full bg-gray-300 bg-opacity-80 "
           }
         ></div>
       )}
