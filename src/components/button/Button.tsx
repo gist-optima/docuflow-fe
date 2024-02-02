@@ -13,7 +13,7 @@ const Button = ({
   return (
     <button
       className={
-        "rounded-md border-2 flex items-center gap-1 border-solid border-gray-300 bg-slate-100 p-2 " +
+        "flex items-center gap-1 rounded-md border border-solid border-gray-300 bg-slate-100 p-[6px] " +
         className
       }
       {...props}

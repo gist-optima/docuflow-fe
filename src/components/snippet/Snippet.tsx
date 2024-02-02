@@ -9,6 +9,7 @@ interface SnippetProps {
   content?: string;
   image?: string;
   style?: CSSProperties;
+  outlined?: boolean;
 }
 
 const Snippet = ({
@@ -17,10 +18,14 @@ const Snippet = ({
   content = "",
   image = "",
   style,
+  outlined = false,
 }: SnippetProps) => {
   return (
     <div
-      className={"flex cursor-pointer flex-col gap-1 rounded-md bg-white p-2 "}
+      className={
+        "flex cursor-pointer flex-col gap-1 rounded-md bg-white p-2" +
+        (outlined ? " border border-gray-300" : "")
+      }
       style={style}
     >
       <div className={"flex items-center justify-between"}>
