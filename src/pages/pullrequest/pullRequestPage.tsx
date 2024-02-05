@@ -13,6 +13,9 @@ const PullRequestPage = () => {
 
   const snippetContainerRef = useRef<HTMLDivElement>(null);
 
+  const rightDivRef = useRef<HTMLDivElement>(null);
+  const [boxWidth, setBoxWidth] = useState(0);
+
   const updatePositions = () => {
     if (leftDivRef.current) {
       // Snippets의 중앙 위치를 다시 계산
@@ -22,7 +25,7 @@ const PullRequestPage = () => {
         const childHeight = child.clientHeight;
         setPositions((prev) => {
           const newPositions = [...prev];
-          newPositions[i] = childTop - childHeight / 1.2;
+          newPositions[i] = childTop + childHeight / 2;
           console.log(newPositions);
           return newPositions;
         });
@@ -43,6 +46,13 @@ const PullRequestPage = () => {
     // 모든 이미지가 로드될 때마다 위치 재계산
     updatePositions();
   }, [leftDivRef.current, loadedImages, rightDivHeight]);
+
+  useEffect(() => {
+    const rightDivWidth = rightDivRef.current?.clientWidth;
+    if (rightDivWidth) {
+      setBoxWidth(rightDivWidth);
+    }
+  });
 
   useEffect(() => {
     window.addEventListener("resize", updatePositions);
@@ -94,16 +104,17 @@ const PullRequestPage = () => {
         <div
           style={{ height: rightDivHeight }}
           className={"flex flex-col gap-2 rounded-lg bg-slate-100 p-3"}
+          ref={rightDivRef}
         >
           <p className={"text-lg"}>AI 변화 감지</p>
           {positions.map((center, index) => (
             <div key={index}>
               <div
                 style={{
-                  position: "relative",
+                  position: "absolute",
                   top: `${center}px`,
                   height: "fit-content",
-                  width: "100%",
+                  width: `${boxWidth - 25}px`,
                 }}
                 className={"rounded-lg bg-green-50 p-3"}
               >
