@@ -7,9 +7,7 @@ export default {
   component: DocumentPage,
 } as Meta<typeof DocumentPage>;
 
-const Template: StoryFn<typeof DocumentPage> = (args) => (
-  <DocumentPage {...args} />
-);
+const Template: StoryFn<typeof DocumentPage> = (args) => <DocumentPage />;
 
 export const Default = Template.bind({});
 Default.args = {};
