@@ -22,6 +22,13 @@ const Snippet = ({
 }: SnippetProps) => {
   return (
     <div
+      draggable
+      onDragStart={(e) => {
+        e.dataTransfer.setData(
+          "text/plain",
+          JSON.stringify({ kind, title, content, image, style, outlined }),
+        );
+      }}
       className={
         "flex cursor-pointer flex-col gap-1 rounded-md bg-white p-2" +
         (outlined ? " border border-gray-300" : "")
@@ -39,9 +46,9 @@ const Snippet = ({
         </button>
       </div>
 
-      <div className={"flex flex-col gap-2"}>
+      <div className={"flex flex-col gap-2 overflow-hidden"}>
         {content && <p className={"text-xs"}>{content}</p>}
-        {image && <img src={image} alt={title} />}
+        {image && <img src={image} alt={title} draggable={false} />}
       </div>
     </div>
   );
