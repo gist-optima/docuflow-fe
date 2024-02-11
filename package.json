@@ -20,6 +20,7 @@
     "@storybook/react-vite": "^7.6.7",
     "@storybook/testing-library": "^0.2.2",
     "@types/webpack-env": "^1.18.4",
+    "axios": "^1.6.7",
     "i18next": "^23.7.16",
     "i18next-browser-languagedetector": "^7.2.0",
     "jotai": "^2.6.4",
