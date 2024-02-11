@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { FormEvent, useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -5,10 +6,27 @@ function LoginForm() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
-    // 로그인 처리 로직 (API 호출 등)
-    console.log("Submitting", { email, password });
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_DOMAIN}/user/signin`,
+        {
+          email,
+          password,
+        },
+      );
+      if (response.status === 201) {
+        const accessToken = response.headers["authorization"];
+        if (accessToken) {
+          localStorage.setItem("accessToken", accessToken);
+          window.location.href = "/";
+        }
+        window.location.href = "/";
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (

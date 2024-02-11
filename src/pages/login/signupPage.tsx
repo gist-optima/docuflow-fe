@@ -1,19 +1,34 @@
+import axios from "axios";
 import React, { FormEvent, useState } from "react";
 
 const SignupForm: React.FC = () => {
   const [email, setEmail] = useState<string>("");
+  const [name, setName] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
     // 비밀번호 일치 여부 확인
     if (password !== confirmPassword) {
       alert("Passwords don't match.");
       return;
     }
-    // 회원가입 처리 로직 (API 호출 등)
-    console.log("Registering", { email, password });
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_DOMAIN}/user/signup`,
+        {
+          email,
+          password,
+          name,
+        },
+      );
+      if (response.status === 201) {
+        window.location.href = "/login";
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -40,6 +55,22 @@ const SignupForm: React.FC = () => {
                 placeholder="Email address"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
+            <div>
+              <label htmlFor="name" className="sr-only">
+                User Name
+              </label>
+              <input
+                id="name"
+                name="name"
+                type="text"
+                autoComplete="name"
+                required
+                className="relative block w-full appearance-none rounded-none border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                placeholder="User Name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
               />
             </div>
             <div>
