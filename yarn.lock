@@ -1923,6 +1923,31 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@gar/promisify@npm:^1.1.3":
+  version: 1.1.3
+  resolution: "@gar/promisify@npm:1.1.3"
+  checksum: 4059f790e2d07bf3c3ff3e0fec0daa8144fe35c1f6e0111c9921bd32106adaa97a4ab096ad7dab1e28ee6a9060083c4d1a4ada42a7f5f3f7a96b8812e2b757c1
+  languageName: node
+  linkType: hard
+
+"@gitgraph/core@npm:1.5.0":
+  version: 1.5.0
+  resolution: "@gitgraph/core@npm:1.5.0"
+  checksum: e8387d2048134953fe1956e9543dc1b685b38054c0a9c53e7367f4f664c07ec1dd5ad1a17693c9735c85cd037f90f7d70125d5fe9c77fb0d7f0fc3f44e9597ee
+  languageName: node
+  linkType: hard
+
+"@gitgraph/react@npm:^1.6.0":
+  version: 1.6.0
+  resolution: "@gitgraph/react@npm:1.6.0"
+  dependencies:
+    "@gitgraph/core": 1.5.0
+  peerDependencies:
+    react: ">= 16.8.0"
+  checksum: daf0a7d5d4fbe3b93350503bea51de85731308a1dcfcb5761ea701ccfcf467b2858d71e5929d0d658c1418f225f5a9b7898825b4eaf222417cdfb43a92c40923
+  languageName: node
+  linkType: hard
+
 "@humanwhocodes/config-array@npm:^0.11.13":
   version: 0.11.14
   resolution: "@humanwhocodes/config-array@npm:0.11.14"
@@ -10342,6 +10367,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "sample-front@workspace:."
   dependencies:
+    "@gitgraph/react": ^1.6.0
     "@storybook/addon-essentials": ^7.6.7
     "@storybook/addon-interactions": ^7.6.7
     "@storybook/addon-links": ^7.6.7
@@ -10378,6 +10404,7 @@ __metadata:
     storybook: ^7.6.7
     storybook-addon-react-router-v6: ^2.0.10
     styled-components: ^6.1.8
+    tailwind-merge: ^2.2.1
     tailwindcss: ^3.4.1
     typescript: ^5.3.3
     vite: ^5.0.11
@@ -10987,6 +11014,15 @@ __metadata:
     "@pkgr/core": ^0.1.0
     tslib: ^2.6.2
   checksum: 9ed5d33abb785f5f24e2531efd53b2782ca77abf7912f734d170134552b99001915531be5a50297aa45c5701b5c9041e8762e6cd7a38e41e2461c1e7fccdedf8
+  languageName: node
+  linkType: hard
+
+"tailwind-merge@npm:^2.2.1":
+  version: 2.2.1
+  resolution: "tailwind-merge@npm:2.2.1"
+  dependencies:
+    "@babel/runtime": ^7.23.7
+  checksum: fd149409b1c18f3bc57aa30ae3a0e0c7f2913636666bd920c1aceeb8798b36766be55dfec8581e63860b83c7e405700ef530952a59c828ccff0c2a401fa67f05
   languageName: node
   linkType: hard
 
