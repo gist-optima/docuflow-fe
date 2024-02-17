@@ -2,18 +2,12 @@ import Icons from "../icons/Icons";
 import ProfileImage from "../profileImage/ProfileImage";
 
 interface ProfileProps {
-  name?: string;
-  description?: string;
-  image?: string;
+  name: string;
+  description: string;
   variant?: "people" | "organization";
 }
 
-const Profile = ({
-  name,
-  description,
-  image,
-  variant = "people",
-}: ProfileProps) => {
+const Profile = ({ name, description, variant = "people" }: ProfileProps) => {
   const isPeople = variant === "people";
 
   return (
@@ -24,7 +18,13 @@ const Profile = ({
           : "grid grid-cols-[80px_1fr] items-center gap-4"
       }
     >
-      <ProfileImage src={image} />
+      <ProfileImage
+        initial={name
+          .split(" ")
+          .map((e) => e[0])
+          .join("")
+          .toUpperCase()}
+      />
 
       <div className={"flex flex-col gap-1"}>
         <p className={isPeople ? "text-xs font-medium" : "text-base font-bold"}>

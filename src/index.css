@@ -6,3 +6,9 @@
   content:" *";
   color: red;
 }
+
+@layer components {
+  .container-style {
+    @apply flex flex-col items-center rounded-lg border border-gray-300 p-5;
+  }
+}
