@@ -80,7 +80,7 @@ const PullRequestPage = () => {
                   key={snippet.id}
                   className={`border-nonep-3 w-fit rounded-md border-none p-4 ${snippet.content ? "bg-green-100" : ""}`}
                 >
-                  {snippet.content ? (
+                  {/* {snippet.content ? (
                     <p key={snippet.id} className="leading-6">
                       {snippet.content}
                     </p>
@@ -93,7 +93,7 @@ const PullRequestPage = () => {
                     />
                   ) : (
                     <></>
-                  )}
+                  )} */}
                 </div>
               ))}
             </div>
