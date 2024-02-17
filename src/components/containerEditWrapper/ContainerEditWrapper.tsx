@@ -57,7 +57,6 @@ const ContainerEditWrapper = ({
 
   return (
     <div
-      className={"container-style"}
       ref={snippetContainerRef}
       onDrop={(e) => {
         const data = e.dataTransfer.getData("text/plain");

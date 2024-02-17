@@ -20,7 +20,7 @@ const Viewer = ({ projectId, versionId }: ViewerProps) => {
   });
 
   return (
-    <div className={"container-style"}>
+    <div>
       {data?.firstLayerContainer[0] && (
         <ContainerView container={data.firstLayerContainer[0]} />
       )}

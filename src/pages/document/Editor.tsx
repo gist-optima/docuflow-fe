@@ -50,28 +50,20 @@ const Editor = ({ projectId, versionId }: EditorProps) => {
     ]);
   };
 
-  return (
-    <div
-      className={"flex flex-col gap-3 rounded-lg border border-gray-300 p-5"}
-    >
-      {data?.firstLayerContainer[0] ? (
-        <ContainerEditWrapper
-          container={data.firstLayerContainer[0]}
-          projectId={projectId}
-          versionId={versionId}
-        />
-      ) : (
-        <div className={"flex w-full justify-center"}>
-          <button
-            className={
-              "rounded-lg border border-gray-300 p-2 hover:bg-slate-100"
-            }
-            onClick={createContainerHandler}
-          >
-            Create Container Frame
-          </button>
-        </div>
-      )}
+  return data?.firstLayerContainer[0] ? (
+    <ContainerEditWrapper
+      container={data.firstLayerContainer[0]}
+      projectId={projectId}
+      versionId={versionId}
+    />
+  ) : (
+    <div className={"flex w-full justify-center"}>
+      <button
+        className={"rounded-lg border border-gray-300 p-2 hover:bg-slate-100"}
+        onClick={createContainerHandler}
+      >
+        Create Container Frame
+      </button>
     </div>
   );
 };
