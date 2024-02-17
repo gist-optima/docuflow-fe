@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import Icons from "src/components/icons/Icons";
-import Snippet from "src/components/snippet/Snippet";
+import SnippetItem from "src/components/snippetItem/SnippetItem";
 import { peoples, snippets } from "src/dummy/dummy";
 
 const PullRequestPage = () => {

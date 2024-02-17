@@ -1,13 +1,17 @@
 import axios from "axios";
 import React, { FormEvent, useState } from "react";
-import { Link } from "react-router-dom";
+import toast from "react-hot-toast";
+import { Link, useNavigate } from "react-router-dom";
 
 function LoginForm() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
+  const navigate = useNavigate();
+
   const handleSubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
+
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_DOMAIN}/user/signin`,
@@ -17,12 +21,14 @@ function LoginForm() {
         },
       );
       if (response.status === 201) {
+        console.log(response);
         const accessToken = response.headers["authorization"];
         if (accessToken) {
           localStorage.setItem("accessToken", accessToken);
-          window.location.href = "/";
+          navigate("/");
+        } else {
+          toast.error("Failed to login");
         }
-        window.location.href = "/";
       }
     } catch (error) {
       console.error(error);

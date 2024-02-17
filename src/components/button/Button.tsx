@@ -14,7 +14,7 @@ const Button = ({
   return (
     <button
       className={twMerge(
-        "flex items-center gap-1 rounded-md border border-solid border-gray-300 bg-slate-100 p-[6px] ",
+        "flex items-center gap-1 rounded-md border border-solid border-gray-300 bg-slate-100 p-[6px] hover:bg-slate-200",
         className,
       )}
       {...props}

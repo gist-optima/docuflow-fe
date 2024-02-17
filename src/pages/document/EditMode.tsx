@@ -4,44 +4,54 @@ import Chat from "src/components/chat/Chat";
 import Icons from "src/components/icons/Icons";
 import Profile from "src/components/profile/Profile";
 import SearchVectorButton from "src/components/searchVectorButton/SearchVectorButton";
-import Snippet from "src/components/snippet/Snippet";
+import SnippetItem from "src/components/snippetItem/SnippetItem";
 import { peoples, snippets as dummySnippets } from "src/dummy/dummy";
-import { SnippetKind } from "src/types/types";
+import {
+  DetailedProject,
+  Project,
+  SnippetKind,
+  Version,
+} from "src/types/types";
+
+import Editor from "./Editor";
 
 interface EditModeProps {
   setMode: Dispatch<SetStateAction<"edit" | "view">>;
+  project: DetailedProject;
 }
 
-const EditMode = ({ setMode }: EditModeProps) => {
+const EditMode = ({ setMode, project }: EditModeProps) => {
+  const [currentVersion, setCurrentVersion] = useState<Version>(
+    project.Version[0],
+  );
+
   const [showBottomSheet, setShowBottomSheet] = useState(true);
-  const [snippets, setSnippets] = useState(dummySnippets);
-  const snippetContainerRef = useRef<HTMLDivElement>(null);
-  const snippetCenterRef = useRef<number[]>([]);
-
-  useEffect(() => {
-    const container = snippetContainerRef.current;
-    if (container) {
-      snippetCenterRef.current = Array.from(container.children).map((child) => {
-        const rect = child.getBoundingClientRect();
-        return rect.top + rect.height / 2;
-      });
-    }
-
-    return () => {
-      snippetCenterRef.current = [];
-    };
-  }, [snippets, window.innerHeight, window.innerWidth]);
 
   return (
     <div className={"flex flex-col items-center"}>
       <div className={"grid w-10/12 items-start gap-4"}>
         <div className={"flex flex-col gap-3"}>
           <div className={"flex justify-between"}>
-            <Button icon={<Icons.Branch />}>
-              <p className={"ml-1 mr-3 text-sm"}>main</p>
+            <select
+              className={
+                "flex items-center gap-1 rounded-md border border-solid border-gray-300 bg-slate-100 p-[6px]"
+              }
+              value={currentVersion.id}
+              onChange={(e) =>
+                setCurrentVersion(
+                  project.Version.find(
+                    (version) => version.id === Number(e.target.value),
+                  )!,
+                )
+              }
+            >
+              {project.Version.map((version) => (
+                <option key={version.id} value={version.id}>
+                  {version.description}
+                </option>
+              ))}
+            </select>
 
-              <Icons.Triangle />
-            </Button>
             <div className={"flex gap-2"}>
               <Button icon={<Icons.Export />}>
                 <p className={"text-sm"}>문서 내보내기</p>
@@ -57,66 +67,7 @@ const EditMode = ({ setMode }: EditModeProps) => {
             </div>
           </div>
 
-          <div
-            className={
-              "flex flex-col items-center rounded-lg border border-gray-300 p-5 pt-10"
-            }
-            onDrop={(e) => {
-              console.log(e);
-              const data = e.dataTransfer.getData("text/plain");
-              console.log(data);
-              const pageY = e.pageY;
-
-              if (data) {
-                const snippet = JSON.parse(data);
-
-                const index = snippetCenterRef.current.findIndex(
-                  (center) => pageY < window.scrollY + center,
-                );
-
-                setSnippets((prev) => {
-                  const newSnippets = [...prev];
-                  newSnippets.splice(index, 0, snippet);
-                  return newSnippets;
-                });
-              }
-            }}
-            onDragOver={(e) => {
-              e.preventDefault();
-            }}
-          >
-            <p className={"text-2xl font-bold"}>
-              {"기후 변화와 이를 해결하기 위한 기술들"}
-            </p>
-
-            <div
-              className={"flex flex-col items-center gap-3"}
-              ref={snippetContainerRef}
-            >
-              {snippets.map((snippet, index) => (
-                <div
-                  key={snippet.id}
-                  className={"w-fit rounded-md border border-gray-400 p-3"}
-                >
-                  {snippet.content ? (
-                    <p key={snippet.id}>{snippet.content}</p>
-                  ) : snippet.image ? (
-                    <img key={snippet.id} src={snippet.image} alt="image" />
-                  ) : (
-                    <></>
-                  )}
-                </div>
-              ))}
-            </div>
-
-            <div
-              className={
-                "flex w-full justify-center rounded-md border border-dashed border-[#B0CDFB] p-4"
-              }
-            >
-              <p>여기에 정보 조각을 끌어다 놓으세요.</p>
-            </div>
-          </div>
+          <Editor projectId={project.id} versionId={currentVersion.id} />
         </div>
       </div>
 
@@ -152,15 +103,7 @@ const EditMode = ({ setMode }: EditModeProps) => {
         <div className={`flex gap-1 overflow-x-scroll`}>
           <div className={"w-5 shrink-0"} />
           {dummySnippets.map((snippet, index) => (
-            <Snippet
-              key={snippet.id}
-              {...snippet}
-              outlined
-              style={{
-                minWidth: "300px",
-                width: "300px",
-              }}
-            />
+            <SnippetItem key={snippet.id} snippet={snippet} />
           ))}
         </div>
       </div>
