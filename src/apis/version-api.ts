@@ -22,7 +22,7 @@ export const getVersion = async ({
   return data;
 };
 
-export const createNewVersion = async ({
+export const createVersion = async ({
   projectId,
   parentVersionId,
   description,

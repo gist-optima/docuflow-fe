@@ -29,7 +29,7 @@ const Header = () => {
   })();
 
   return (
-    <header className="relative border-b border-gray-200 bg-gray-100">
+    <header className="relative mb-8 border-b border-gray-200 bg-gray-100">
       <div className="container mx-10 my-auto flex items-start justify-between pt-5">
         {/* Left Side - Branding */}
         <div className="flex flex-col justify-center align-middle">
