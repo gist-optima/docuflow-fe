@@ -49,12 +49,12 @@ export const regenerateQuery = async ({
   previousQuery: string;
   shownSnippets: string[];
   prefferedSnippet: string;
-  n: string;
+  n: number;
 }) => {
-  const { data } = await apiPoster("/ai/regenerate-query", {
+  const { data } = await apiPoster<string[]>("/ai/regenerate-query", {
     allContents,
     focusedContainer,
-    guidingVector,
+    guildingVector: guidingVector,
     previousQuery,
     shownSnippets,
     prefferedSnippet,
@@ -74,6 +74,56 @@ export const googleSearch = async ({
   const { data } = await apiGetter<object>(
     "/ai/google-search?search=" + search + "&n=" + n,
   );
+
+  return data;
+};
+
+export const extractSnippet = async ({
+  articles,
+  allContents,
+  focusedContainer,
+  guildingVector,
+  shownSnippets,
+  prefferedSnippet,
+}: {
+  articles: string[];
+  allContents: string;
+  focusedContainer: string;
+  guildingVector: string;
+  shownSnippets: string;
+  prefferedSnippet: string;
+}) => {
+  const { data } = await apiPoster<string[][]>("/ai/extract-snippet", {
+    articles,
+    allContents,
+    focusedContainer,
+    guildingVector,
+    shownSnippets,
+    prefferedSnippet,
+  });
+
+  return data;
+};
+
+export const modulizeDocument = async ({
+  allArticles,
+}: {
+  allArticles: string;
+}) => {
+  const { data } = await apiPoster<{
+    snippets: string[][];
+    "all contents": object;
+  }>("/ai/modulizer", {
+    allArticles,
+  });
+
+  return data;
+};
+
+export const liquifySnippets = async ({ snippets }: { snippets: string[] }) => {
+  const { data } = await apiPoster<{ result: string }>("/ai/liquifier", {
+    snippets,
+  });
 
   return data;
 };

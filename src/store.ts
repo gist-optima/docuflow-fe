@@ -7,3 +7,4 @@ export const currentProjectAtom = atom<Project | null>(null);
 export const modalListAtom = atom<React.ReactNode[]>([]);
 export const focusedContainerAtom = atom<Container | null>(null);
 export const overlayedContainerIdAtom = atom<number | null>(null);
+export const preferredSnippetAtom = atom<string>("");

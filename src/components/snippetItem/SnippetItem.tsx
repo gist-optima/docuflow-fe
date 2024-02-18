@@ -1,3 +1,5 @@
+import { useAtom } from "jotai";
+import { preferredSnippetAtom } from "src/store";
 import { Snippet, SnippetKind } from "src/types/types";
 
 import Icons from "../icons/Icons";

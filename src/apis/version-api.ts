@@ -158,3 +158,37 @@ export const deleteSnippet = async ({
 
   return data;
 };
+
+export const checkBranchDiff = async ({
+  projectId,
+  versionId,
+  containerId,
+  diffVersionId,
+}: {
+  projectId: number;
+  versionId: number;
+  containerId: number;
+  diffVersionId: number;
+}) => {
+  const { data } = await apiPoster(
+    `/project/${projectId}/version/${versionId}/diff/container/${containerId}?diffVersionId=${diffVersionId}`,
+  );
+
+  return data;
+};
+
+export const mergeBranch = async ({
+  projectId,
+  versionId,
+  mergeParentId,
+}: {
+  projectId: number;
+  versionId: number;
+  mergeParentId: number;
+}) => {
+  const { data } = await apiPoster(
+    `/project/${projectId}/version/${versionId}/merge?mergeParentId=${mergeParentId}`,
+  );
+
+  return data;
+};

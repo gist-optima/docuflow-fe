@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAtom } from "jotai";
 import { useEffect, useRef, useState } from "react";
 import { createSnippet, updateSnippet } from "src/apis/version-api";
-import { overlayedContainerIdAtom } from "src/store";
+import { overlayedContainerIdAtom, preferredSnippetAtom } from "src/store";
 import { Container, QueryKey, Snippet } from "src/types/types";
 import { DFSCenter } from "src/utils/utils";
 
@@ -24,6 +24,7 @@ const ContainerEditWrapper = ({
     { top: number; bottom: number; containerId: number; order: number }[]
   >([]);
   const [, setOverlayedContainerId] = useAtom(overlayedContainerIdAtom);
+  const [, setPreferredSnippet] = useAtom(preferredSnippetAtom);
 
   useEffect(() => {
     const wrapper = snippetContainerRef.current;
@@ -67,6 +68,7 @@ const ContainerEditWrapper = ({
 
         if (data) {
           const snippet: Snippet = JSON.parse(data);
+          setPreferredSnippet(snippet.content);
 
           let index = 0;
           let minGap = Infinity;
@@ -135,7 +137,6 @@ const ContainerEditWrapper = ({
         const item = snippetCenterRef.current[index];
 
         setOverlayedContainerId(item.containerId);
-        console.log(item.containerId);
       }}
     >
       <ContainerEdit
@@ -143,14 +144,14 @@ const ContainerEditWrapper = ({
         projectId={projectId}
         versionId={versionId}
       />
-
+      {/* 
       <div
         className={
           "flex w-full justify-center rounded-md border border-dashed border-[#B0CDFB] p-4"
         }
       >
         <p>여기에 정보 조각을 끌어다 놓으세요.</p>
-      </div>
+      </div> */}
     </div>
   );
 };

@@ -24,10 +24,6 @@ const ContainerEdit = ({
   const [focusedContainer, setFocusedContainer] = useAtom(focusedContainerAtom);
   const [overlayedContainerId] = useAtom(overlayedContainerIdAtom);
 
-  useEffect(() => {
-    console.log(overlayedContainerId);
-  }, [overlayedContainerId]);
-
   return (
     <div
       className={twMerge(

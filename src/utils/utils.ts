@@ -1,4 +1,4 @@
-import { Container } from "src/types/types";
+import { Container, Snippet, Version } from "src/types/types";
 
 export function mulberry32(a: number) {
   return function () {
@@ -52,6 +52,26 @@ export const DFSCenter = (
   }
 };
 
+export const stringifyContainer = (container: Container): string[] => {
+  const children: (Snippet | Container)[] = [
+    ...container.Snippet,
+    ...container.child,
+  ].sort((a, b) => a.order - b.order);
+
+  const result: string[] = [];
+
+  children.forEach((child) => {
+    // @ts-ignore
+    if (child.indicator) {
+      result.push((child as Snippet).content);
+    } else {
+      result.push(...stringifyContainer(child as Container));
+    }
+  });
+
+  return [container.name, ...result];
+};
+
 export const getFocusedContainers = (
   container: Container,
   allContainers: Container[],
@@ -63,4 +83,10 @@ export const getFocusedContainers = (
   const parent = allContainers.find((c) => c.id === container.parentId)!;
 
   return [container.name, ...getFocusedContainers(parent, allContainers)];
+};
+
+export const parseBranches = (versions: Version[]): string[] => {
+  const branches = Array.from(new Set(versions.map((version) => version.tag)));
+
+  return branches;
 };

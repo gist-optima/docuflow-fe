@@ -34,6 +34,11 @@ const VersionCreatePanel = ({ project }: VersionCreatePanelProps) => {
     const issueName = e.currentTarget.issueName.value;
     const tagName = e.currentTarget.tagNameA.value;
 
+    if (!issueName || !tagName) {
+      toast.error("논점 이름과 태그를 입력해주세요.");
+      return;
+    }
+
     createVersionMutation.mutate({
       projectId: project.id,
       parentVersionId: selectedVersion.id,
@@ -49,15 +54,17 @@ const VersionCreatePanel = ({ project }: VersionCreatePanelProps) => {
     >
       <p className={"font-medium"}>논점 생성하기</p>
 
-      <p className={"mt-2 text-xs"}>논점 이름</p>
+      <p className={"required mt-2 text-xs"}>논점 이름</p>
       <input
+        required
         className={"rounded-lg border border-gray-400 p-1 text-xs"}
         name={"issueName"}
         placeholder={"논점 이름 입력"}
       />
 
-      <p className={"mt-2 text-xs"}>태그</p>
+      <p className={"required mt-2 text-xs"}>태그</p>
       <input
+        required
         className={"rounded-lg border border-gray-400 p-1 text-xs"}
         name={"tagNameA"}
         placeholder={"태그 입력"}

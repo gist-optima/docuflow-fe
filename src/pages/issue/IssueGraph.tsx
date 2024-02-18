@@ -48,12 +48,12 @@ const IssueGraph = ({}: IssueGraphProps) => {
   };
 
   if (data === undefined) return <></>;
-  else console.log(data?.Version);
 
   return (
     <div className={"rounded-lg border border-gray-300 p-5"}>
       <Gitgraph
         options={{
+          author: " ", // to hide the author label for each commit
           template: templateExtend(TemplateName.Metro, {
             colors: [
               "gray",

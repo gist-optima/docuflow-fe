@@ -1,6 +1,7 @@
 import { Dispatch, SetStateAction, useState } from "react";
 import Button from "src/components/button/Button";
 import Icons from "src/components/icons/Icons";
+import Liquifier from "src/components/liquifier/Liquifier";
 import { DetailedProject, Version } from "src/types/types";
 
 import UserSection from "./UserSection";
@@ -44,9 +45,7 @@ const ViewMode = ({ setMode, project }: ViewModeProps) => {
             </select>
 
             <div className={"flex gap-2"}>
-              <Button icon={<Icons.Export />}>
-                <p className={"text-sm"}>문서 내보내기</p>
-              </Button>
+              <Liquifier versionId={currentVersion.id} projectId={project.id} />
 
               <Button
                 icon={<Icons.Write />}
