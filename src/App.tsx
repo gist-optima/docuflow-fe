@@ -8,6 +8,7 @@ import LoginForm from "./pages/login/loginPage";
 import SignupForm from "./pages/login/signupPage";
 import MainPage from "./pages/main/MainPage";
 import PullRequestPage from "./pages/pullrequest/pullRequestPage";
+import PullRequestListPage from "./pages/pullRequestList/PullRequestListPage";
 import ToolPage from "./pages/tool/ToolPage";
 
 function App() {
@@ -21,7 +22,11 @@ function App() {
             <Route path="/" element={<MainPage />} />
             <Route path="/project/:id/document" element={<DocumentPage />} />
             <Route
-              path="/project/:id/pullrequest"
+              path="/project/:id/pullrequests"
+              element={<PullRequestListPage />}
+            />
+            <Route
+              path="/project/:id/pullrequest/:pullRequestId"
               element={<PullRequestPage />}
             />
             <Route path="/project/:id/issue" element={<IssuePage />} />

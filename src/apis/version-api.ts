@@ -160,16 +160,20 @@ export const deleteSnippet = async ({
 };
 
 export const checkBranchDiff = async ({
-  projectId,
-  versionId,
-  containerId,
-  diffVersionId,
+  queryKey,
 }: {
-  projectId: number;
-  versionId: number;
-  containerId: number;
-  diffVersionId: number;
+  queryKey: [
+    string,
+    {
+      projectId: number;
+      versionId: number;
+      containerId: number;
+      diffVersionId: number;
+    },
+  ];
 }) => {
+  const { projectId, versionId, containerId, diffVersionId } = queryKey[1];
+
   const { data } = await apiPoster(
     `/project/${projectId}/version/${versionId}/diff/container/${containerId}?diffVersionId=${diffVersionId}`,
   );

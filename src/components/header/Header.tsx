@@ -49,7 +49,7 @@ const Header = () => {
                 {[
                   ["문서 작업", `/project/${id}/document`],
                   ["논점 생성", `/project/${id}/issue`],
-                  ["검토 요청", `/project/${id}/pullrequest`],
+                  ["검토 요청", `/project/${id}/pullrequests`],
                   ["자동화 툴", `/project/${id}/tool`],
                 ].map((text) => (
                   <Link to={text[1]} key={text[1]}>
