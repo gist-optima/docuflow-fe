@@ -8,6 +8,7 @@ import LoginForm from "./pages/login/loginPage";
 import SignupForm from "./pages/login/signupPage";
 import MainPage from "./pages/main/MainPage";
 import PullRequestPage from "./pages/pullrequest/pullRequestPage";
+import ToolPage from "./pages/tool/ToolPage";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
               element={<PullRequestPage />}
             />
             <Route path="/project/:id/issue" element={<IssuePage />} />
+            <Route path="/project/:id/tool" element={<ToolPage />} />
           </Route>
         </Routes>
       </BrowserRouter>

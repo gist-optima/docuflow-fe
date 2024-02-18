@@ -9,6 +9,7 @@ import { modalListAtom } from "src/store";
 import { Container, QueryKey, Snippet } from "src/types/types";
 
 import GenerateContainerModal from "./GenerateContainerModal";
+import ModulizeModal from "./ModulizeModal";
 
 interface EditorProps {
   projectId: number;
@@ -50,6 +51,17 @@ const Editor = ({ projectId, versionId }: EditorProps) => {
     ]);
   };
 
+  const modulizeHandler = () => {
+    setModalList((prev) => [
+      ...prev,
+      <ModulizeModal
+        key={"GenerateContainerModal"}
+        projectId={projectId}
+        versionId={versionId}
+      />,
+    ]);
+  };
+
   return data?.firstLayerContainer[0] ? (
     <ContainerEditWrapper
       container={data.firstLayerContainer[0]}
@@ -57,12 +69,18 @@ const Editor = ({ projectId, versionId }: EditorProps) => {
       versionId={versionId}
     />
   ) : (
-    <div className={"flex w-full justify-center"}>
+    <div className={"flex w-full justify-center gap-4"}>
       <button
         className={"rounded-lg border border-gray-300 p-2 hover:bg-slate-100"}
         onClick={createContainerHandler}
       >
-        Create Container Frame
+        컨테이너 프레임 생성
+      </button>
+      <button
+        className={"rounded-lg border border-gray-300 p-2 hover:bg-slate-100"}
+        onClick={modulizeHandler}
+      >
+        줄글 가져오기
       </button>
     </div>
   );

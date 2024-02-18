@@ -1,26 +1,28 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { useAtom } from "jotai";
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import toast from "react-hot-toast";
-import { generateQuery, googleSearch } from "src/apis/ai-api";
+import {
+  extractSnippet,
+  generateQuery,
+  googleSearch,
+  regenerateQuery,
+} from "src/apis/ai-api";
 import { getVersion } from "src/apis/version-api";
 import Button from "src/components/button/Button";
-import Chat from "src/components/chat/Chat";
 import Icons from "src/components/icons/Icons";
-import Profile from "src/components/profile/Profile";
+import Liquifier from "src/components/liquifier/Liquifier";
 import SearchVectorButton from "src/components/searchVectorButton/SearchVectorButton";
 import SnippetItem from "src/components/snippetItem/SnippetItem";
-import { peoples, snippets as dummySnippets } from "src/dummy/dummy";
-import { focusedContainerAtom } from "src/store";
+import { focusedContainerAtom, preferredSnippetAtom } from "src/store";
 import {
   DetailedProject,
-  Project,
   QueryKey,
   Snippet,
   SnippetKind,
   Version,
 } from "src/types/types";
-import { getFocusedContainers } from "src/utils/utils";
+import { getFocusedContainers, stringifyContainer } from "src/utils/utils";
 
 import Editor from "./Editor";
 
@@ -38,6 +40,8 @@ const EditMode = ({ setMode, project }: EditModeProps) => {
   const [guidingVector, setGuidingVector] = useState<string>("");
   const [focusedContainer, setFocusedContainer] = useAtom(focusedContainerAtom);
   const [snippets, setSnippets] = useState<Snippet[]>([]);
+  const [preferredSnippet] = useAtom(preferredSnippetAtom);
+  const [previousQuery, setPreviousQuery] = useState<string>("");
 
   const { data } = useQuery({
     queryKey: [
@@ -48,6 +52,8 @@ const EditMode = ({ setMode, project }: EditModeProps) => {
   });
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    if (!data) return;
+
     e.preventDefault();
 
     console.log(currentVersion);
@@ -58,10 +64,20 @@ const EditMode = ({ setMode, project }: EditModeProps) => {
         : [];
 
     const queries = await toast.promise(
-      generateQuery({
-        focusedContainer: focusedContainerStack.join(" "),
-        guidingVector,
-      }),
+      snippets.length > 0
+        ? regenerateQuery({
+            allContents: stringifyContainer(data.firstLayerContainer[0]),
+            focusedContainer: focusedContainerStack.join(" "),
+            guidingVector,
+            previousQuery,
+            shownSnippets: snippets.map((snippet) => snippet.content),
+            prefferedSnippet: preferredSnippet,
+            n: 3,
+          })
+        : generateQuery({
+            focusedContainer: focusedContainerStack.join(" "),
+            guidingVector,
+          }),
       {
         loading: "쿼리 생성 중...",
         success: "쿼리 생성 완료",
@@ -82,25 +98,47 @@ const EditMode = ({ setMode, project }: EditModeProps) => {
 
     console.log(searchResults);
 
+    const stringifiedContents = stringifyContainer(data.firstLayerContainer[0]);
+
+    const extractedSnippets = await toast.promise(
+      extractSnippet({
+        articles: searchResults
+          .reduce<string[]>((acc, cur) => [...acc, ...Object.values(cur)], [])
+          .filter((article) => article.length > 0),
+        allContents: stringifiedContents.join(" "),
+        focusedContainer: focusedContainerStack.join(" "),
+        guildingVector: guidingVector,
+        shownSnippets: snippets.map((snippet) => snippet.content).join(" "),
+        prefferedSnippet: preferredSnippet,
+      }),
+      {
+        loading: "정보 조각 추출 중...",
+        success: "정보 조각 추출 완료",
+        error: "정보 조각 추출 실패",
+      },
+    );
+
+    console.log("snippets", extractedSnippets);
+
     const newSnippets: Snippet[] = [];
 
-    searchResults.forEach((result, index) => {
-      Object.keys(result).forEach((key, objectIndex) => {
-        const snippet: Snippet = {
-          id: index * 100 + objectIndex,
-          indicator: "",
-          type: SnippetKind.Document,
-          // @ts-ignore
-          content: result[key],
-          order: -1,
-          createdAt: "",
-          containerId: -1,
-        };
-        newSnippets.push(snippet);
-      });
+    extractedSnippets.flat().forEach((result, index) => {
+      const snippet: Snippet = {
+        id: index,
+        indicator: "",
+        type: SnippetKind.Document,
+        // @ts-ignore
+        content: result,
+        order: -1,
+        createdAt: "",
+        containerId: -1,
+      };
+      newSnippets.push(snippet);
     });
 
     setSnippets(newSnippets);
+
+    setPreviousQuery(guidingVector);
   };
 
   return (
@@ -129,16 +167,14 @@ const EditMode = ({ setMode, project }: EditModeProps) => {
             </select>
 
             <div className={"flex gap-2"}>
-              <Button icon={<Icons.Export />}>
-                <p className={"text-sm"}>문서 내보내기</p>
-              </Button>
+              <Liquifier versionId={currentVersion.id} projectId={project.id} />
 
               <Button
                 icon={<Icons.Send />}
                 className={"border-0 bg-[#006BB9]"}
                 onClick={() => setMode("view")}
               >
-                <p className={"text-sm text-white"}>커밋 & 푸시</p>
+                <p className={"text-sm text-white"}>완료</p>
               </Button>
             </div>
           </div>
@@ -201,7 +237,7 @@ const EditMode = ({ setMode, project }: EditModeProps) => {
             className={
               "w-[500px] rounded-md border border-gray-400 p-2 text-sm"
             }
-            placeholder={"원하시는 정보의 종류를 간단히 입력하세요"}
+            placeholder={"원하시는 정보의 방향성을 간단히 입력하세요"}
           />
 
           <Button className={"px-5"}>
