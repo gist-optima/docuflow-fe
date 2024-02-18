@@ -24,7 +24,9 @@ export interface Version {
   createdAt: string;
   updatedAt: string;
   projectId: number;
+  tag: string;
   parentId: number;
+  child: VersionChild[];
   mergeParentId: number;
   isCommited: boolean;
 }
@@ -34,6 +36,10 @@ export interface DetailedVersion extends Version {
   Container: Container[];
   firstLayerSnippet: Snippet[];
   firstLayerContainer: Container[];
+}
+
+export interface VersionChild {
+  id: number;
 }
 
 export interface Layer {

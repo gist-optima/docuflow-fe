@@ -32,11 +32,13 @@ const VersionCreatePanel = ({ project }: VersionCreatePanelProps) => {
     e.preventDefault();
 
     const issueName = e.currentTarget.issueName.value;
+    const tagName = e.currentTarget.tagNameA.value;
 
     createVersionMutation.mutate({
       projectId: project.id,
       parentVersionId: selectedVersion.id,
       description: issueName,
+      tag: tagName,
     });
   };
 
@@ -52,6 +54,13 @@ const VersionCreatePanel = ({ project }: VersionCreatePanelProps) => {
         className={"rounded-lg border border-gray-400 p-1 text-xs"}
         name={"issueName"}
         placeholder={"논점 이름 입력"}
+      />
+
+      <p className={"mt-2 text-xs"}>태그</p>
+      <input
+        className={"rounded-lg border border-gray-400 p-1 text-xs"}
+        name={"tagNameA"}
+        placeholder={"태그 입력"}
       />
 
       <p className={"mt-2 text-xs"}>기반 브랜치 선택</p>

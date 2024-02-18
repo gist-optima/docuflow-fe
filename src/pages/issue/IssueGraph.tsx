@@ -1,24 +1,77 @@
-import { Gitgraph } from "@gitgraph/react";
+import {
+  Gitgraph,
+  GitgraphProps,
+  templateExtend,
+  TemplateName,
+} from "@gitgraph/react";
+import { useQuery } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { getProject } from "src/apis/project-api";
+import { QueryKey, Version } from "src/types/types";
 
 interface IssueGraphProps {}
 
 const IssueGraph = ({}: IssueGraphProps) => {
+  const { id } = useParams<{ id: string }>();
+
+  const { data } = useQuery({
+    queryKey: [QueryKey.GetProject, { id: id || "" }],
+    queryFn: getProject,
+    enabled: !!id,
+  });
+
+  const generateGraphFromVersions = (
+    gitgraph: any,
+    versions: Version[],
+  ): void => {
+    const branches: { [tag: string]: any } = {};
+
+    // 기본 브랜치를 생성하고 초기 커밋을 추가합니다.
+    const master = gitgraph.branch("main");
+    master.commit("Initial commit");
+
+    versions.forEach((version) => {
+      let branch: any;
+
+      if (branches[version.tag]) {
+        branch = branches[version.tag];
+      } else {
+        branch = master.branch(version.tag);
+        branches[version.tag] = branch;
+      }
+      branch.commit({
+        subject: version.description,
+        hash: version.id.toString(),
+      });
+    });
+  };
+
+  if (data === undefined) return <></>;
+  else console.log(data?.Version);
+
   return (
     <div className={"rounded-lg border border-gray-300 p-5"}>
-      <Gitgraph options={{}}>
+      <Gitgraph
+        options={{
+          template: templateExtend(TemplateName.Metro, {
+            colors: [
+              "gray",
+              "orange",
+              "green",
+              "blue",
+              "purple",
+              "red",
+              "cyan",
+            ],
+            // …
+          }),
+        }}
+      >
         {(gitgraph) => {
-          const master = gitgraph.branch("main");
-          master.commit("첫번째 분기");
-          const introduction = gitgraph.branch("서론 작성");
-          const body = gitgraph.branch("본론 작성");
-          body.commit("본론 틀 작성");
-          const conclusion = gitgraph.branch("결론 작성");
-          introduction.commit("서론 틀 작성");
-          conclusion.commit("결론 틀 작성");
-          // const paper_reading = gitgraph.branch("논문 리딩 결과");
-
-          // Merge `newFeature` into `master`
-          // introduction.merge(paper_reading);
+          if (data?.Version) {
+            generateGraphFromVersions(gitgraph, data.Version);
+          }
         }}
       </Gitgraph>
     </div>

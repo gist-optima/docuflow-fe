@@ -26,15 +26,18 @@ export const createVersion = async ({
   projectId,
   parentVersionId,
   description,
+  tag,
 }: {
   projectId: number;
   parentVersionId: number;
   description: string;
+  tag: string;
 }) => {
   const { data } = await apiPoster<Version>(
     `/project/${projectId}/version?parentVersionId=${parentVersionId}`,
     {
       description,
+      tag,
     },
   );
 
