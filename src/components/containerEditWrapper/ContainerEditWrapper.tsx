@@ -1,6 +1,8 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useAtom } from "jotai";
 import { useEffect, useRef, useState } from "react";
 import { createSnippet, updateSnippet } from "src/apis/version-api";
+import { overlayedContainerIdAtom } from "src/store";
 import { Container, QueryKey, Snippet } from "src/types/types";
 import { DFSCenter } from "src/utils/utils";
 
@@ -21,6 +23,7 @@ const ContainerEditWrapper = ({
   const snippetCenterRef = useRef<
     { top: number; bottom: number; containerId: number; order: number }[]
   >([]);
+  const [, setOverlayedContainerId] = useAtom(overlayedContainerIdAtom);
 
   useEffect(() => {
     const wrapper = snippetContainerRef.current;
@@ -28,12 +31,10 @@ const ContainerEditWrapper = ({
       snippetCenterRef.current = DFSCenter(wrapper);
     }
 
-    console.log(snippetCenterRef.current);
-
     return () => {
       snippetCenterRef.current = [];
     };
-  }, [container, window.innerHeight, window.innerWidth]);
+  }, [container, window.innerHeight, window.innerWidth, window.scrollY]);
 
   const queryClient = useQueryClient();
 
@@ -59,10 +60,10 @@ const ContainerEditWrapper = ({
     <div
       ref={snippetContainerRef}
       onDrop={(e) => {
+        setOverlayedContainerId(null);
+
         const data = e.dataTransfer.getData("text/plain");
         const pageY = e.pageY;
-
-        console.log(data);
 
         if (data) {
           const snippet: Snippet = JSON.parse(data);
@@ -83,8 +84,6 @@ const ContainerEditWrapper = ({
           });
 
           const item = snippetCenterRef.current[index];
-
-          console.log(pageY, item.containerId, item.order);
 
           const order =
             item?.containerId ===
@@ -116,8 +115,27 @@ const ContainerEditWrapper = ({
       }}
       onDragOver={(e) => {
         e.preventDefault();
+        const pageY = e.pageY;
 
-        // console.log(e);
+        let index = 0;
+        let minGap = Infinity;
+
+        snippetCenterRef.current.forEach((position, i) => {
+          if (
+            pageY < window.scrollY + position.bottom &&
+            pageY > window.scrollY + position.top
+          ) {
+            if (position.bottom - position.top < minGap) {
+              minGap = position.bottom - position.top;
+              index = i;
+            }
+          }
+        });
+
+        const item = snippetCenterRef.current[index];
+
+        setOverlayedContainerId(item.containerId);
+        console.log(item.containerId);
       }}
     >
       <ContainerEdit

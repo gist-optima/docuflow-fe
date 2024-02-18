@@ -21,7 +21,6 @@ function LoginForm() {
         },
       );
       if (response.status === 201) {
-        console.log(response);
         const accessToken = response.headers["authorization"];
         if (accessToken) {
           localStorage.setItem("accessToken", accessToken);

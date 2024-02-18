@@ -27,6 +27,9 @@ export interface Version {
   parentId: number;
   mergeParentId: number;
   isCommited: boolean;
+}
+
+export interface DetailedVersion extends Version {
   Snippet: Snippet[];
   Container: Container[];
   firstLayerSnippet: Snippet[];

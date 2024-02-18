@@ -1,6 +1,6 @@
-import { Version } from "src/types/types";
+import { DetailedVersion, Version } from "src/types/types";
 
-import { apiGetter, apiPatcher, apiPoster } from "./interceptor";
+import { apiDeleter, apiGetter, apiPatcher, apiPoster } from "./interceptor";
 
 export const getVersion = async ({
   queryKey,
@@ -15,7 +15,7 @@ export const getVersion = async ({
 }) => {
   const { projectId, versionId } = queryKey[1];
 
-  const { data } = await apiGetter<Version>(
+  const { data } = await apiGetter<DetailedVersion>(
     `/project/${projectId}/version/${versionId}`,
   );
 
@@ -133,7 +133,7 @@ export const deleteContainer = async ({
   versionId: number;
   containerId: number;
 }) => {
-  const { data } = await apiPoster<Version>(
+  const { data } = await apiDeleter<Version>(
     `/project/${projectId}/version/${versionId}/container/${containerId}`,
   );
 
@@ -149,7 +149,7 @@ export const deleteSnippet = async ({
   versionId: number;
   snippetId: number;
 }) => {
-  const { data } = await apiPoster<Version>(
+  const { data } = await apiDeleter<Version>(
     `/project/${projectId}/version/${versionId}/snippet/${snippetId}`,
   );
 

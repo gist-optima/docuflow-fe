@@ -1,3 +1,5 @@
+import { Container } from "src/types/types";
+
 export function mulberry32(a: number) {
   return function () {
     let t = (a += 0x6d2b79f5);
@@ -48,4 +50,17 @@ export const DFSCenter = (
 
     return centerList;
   }
+};
+
+export const getFocusedContainers = (
+  container: Container,
+  allContainers: Container[],
+): string[] => {
+  if (container.parentId === null) {
+    return [container.name];
+  }
+
+  const parent = allContainers.find((c) => c.id === container.parentId)!;
+
+  return [container.name, ...getFocusedContainers(parent, allContainers)];
 };
