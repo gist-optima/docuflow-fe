@@ -49,7 +49,7 @@ const IssuePage = () => {
             </Button>
           </div>
         </div>
-        <div className={"flex gap-4"}>
+        <div className={"grid grid-cols-[1fr_200px] gap-4"}>
           <IssueGraph />
 
           {data && <VersionCreatePanel project={data} />}

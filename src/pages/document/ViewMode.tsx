@@ -39,7 +39,7 @@ const ViewMode = ({ setMode, project }: ViewModeProps) => {
             >
               {project.Version.map((version) => (
                 <option key={version.id} value={version.id}>
-                  {version.description}
+                  {version.tag} - {version.description}
                 </option>
               ))}
             </select>

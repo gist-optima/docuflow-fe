@@ -1,10 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
+import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { getProject } from "src/apis/project-api";
-import { checkBranchDiff } from "src/apis/version-api";
+import { useNavigate } from "react-router-dom";
+import { createPullRequest, getProject } from "src/apis/project-api";
+import { checkBranchDiff, getVersion } from "src/apis/version-api";
 import Button from "src/components/button/Button";
 import Modal from "src/components/modal/Modal";
+import { modalListAtom } from "src/store";
 import { DetailedProject, QueryKey, Version } from "src/types/types";
 import { parseBranches } from "src/utils/utils";
 
@@ -13,11 +16,22 @@ interface MergeRequestModalProps {
 }
 
 const MergeRequestModal = ({ project }: MergeRequestModalProps) => {
+  const [, setModalList] = useAtom(modalListAtom);
   const [currentBranch, setCurrentBranch] = useState<string>();
   const [diffBranch, setDiffBranch] = useState<string>();
   const [branches, setBranches] = useState<string[]>(
     parseBranches(project.Version),
   );
+
+  const navigate = useNavigate();
+
+  const { data } = useQuery({
+    queryKey: [
+      QueryKey.GetVersion,
+      { projectId: project.id, versionId: project.Version[0].id },
+    ],
+    queryFn: getVersion,
+  });
 
   const handleMergeRequest = async () => {
     if (!currentBranch || !diffBranch) {
@@ -25,12 +39,42 @@ const MergeRequestModal = ({ project }: MergeRequestModalProps) => {
       return;
     }
 
-    // await checkBranchDiff({
-    //   projectId: project.id,
-    //   versionId: project.Version[0].id,
-    //   containerId: project.Version[0].Container.id,
-    //   currentBranch,
-    // });
+    const currentBranchVersions = project.Version.filter(
+      (version) => version.tag === currentBranch,
+    );
+
+    const newestCurrentBranchVersion = currentBranchVersions.reduce(
+      (prev, curr) => {
+        return new Date(prev.createdAt) > new Date(curr.createdAt)
+          ? prev
+          : curr;
+      },
+    );
+
+    const diffBranchVersions = project.Version.filter(
+      (version) => version.tag === diffBranch,
+    );
+
+    const newestDiffBranchVersion = diffBranchVersions.reduce((prev, curr) => {
+      return new Date(prev.createdAt) > new Date(curr.createdAt) ? prev : curr;
+    });
+
+    if (!data) {
+      toast.error("버전을 찾을 수 없습니다");
+      return;
+    }
+
+    const pullRequest = await createPullRequest({
+      projectId: project.id,
+      title: `${currentBranch}에서 ${diffBranch}(으)로 병합 요청`,
+      description: `병합 요청: ${currentBranch}에서 ${diffBranch}(으)로 병합 요청`,
+      fromTag: diffBranch,
+      toTag: currentBranch,
+    });
+
+    toast.success("병합 요청이 완료되었습니다.");
+
+    setModalList((prev) => prev.slice(0, -1));
   };
 
   return (

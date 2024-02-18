@@ -49,6 +49,17 @@ export interface Layer {
 export interface DetailedProject extends Project {
   users: User[];
   Version: Version[];
+  PullRequest: PullRequest[];
+}
+export interface PullRequest {
+  id: number;
+  title: string;
+  description: string;
+  createdAt: string;
+  updatedAt: string;
+  fromTag: string;
+  toTag: string;
+  projectId: number;
 }
 
 export enum QueryKey {
@@ -57,6 +68,8 @@ export enum QueryKey {
   GetProject = "getProject",
   GetVersion = "getVersion",
   GenerateContainer = "generateContainer",
+  GetPullRequest = "getPullRequest",
+  GetBranchDiff = "getBranchDiff",
 }
 
 export interface Container {

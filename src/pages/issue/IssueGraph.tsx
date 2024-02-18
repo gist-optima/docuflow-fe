@@ -1,6 +1,7 @@
 import {
   Gitgraph,
   GitgraphProps,
+  Mode,
   templateExtend,
   TemplateName,
 } from "@gitgraph/react";
@@ -54,6 +55,7 @@ const IssueGraph = ({}: IssueGraphProps) => {
       <Gitgraph
         options={{
           author: " ", // to hide the author label for each commit
+          // mode: Mode.Compact,
           template: templateExtend(TemplateName.Metro, {
             colors: [
               "gray",
