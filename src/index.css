@@ -7,8 +7,22 @@
   color: red;
 }
 
+.focused-container {
+  @apply border-blue-500;
+}
+
+.focused-container:after {
+  @apply block;
+  content: "Focused";
+  position: absolute;
+  font-size: 14px;
+  top: 2px;
+  left: 4px;
+  color: rgb(59 130 246);
+}
+
 @layer components {
   .container-style {
-    @apply flex flex-col items-center rounded-lg border border-gray-300 p-5;
+    @apply flex flex-col items-center rounded-lg border border-gray-300 p-5 relative;
   }
 }

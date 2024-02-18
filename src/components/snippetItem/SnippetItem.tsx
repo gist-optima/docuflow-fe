@@ -12,7 +12,6 @@ const SnippetItem = ({ snippet }: SnippetItemProps) => {
       draggable
       onDragStart={(e) => {
         e.dataTransfer.setData("text/plain", JSON.stringify(snippet));
-        console.log("dragging");
       }}
       className={
         "flex cursor-pointer flex-col gap-1 rounded-md bg-white p-2"
@@ -22,7 +21,7 @@ const SnippetItem = ({ snippet }: SnippetItemProps) => {
       <div className={"flex items-center justify-between"}>
         <div className={"flex flex-nowrap items-center gap-1"}>
           {kindIcon(snippet.type)}
-          <p className={"text-sm font-medium"}>{"asdf"}</p>
+          {/* <p className={"text-sm font-medium"}>{"asdf"}</p> */}
         </div>
 
         <button>

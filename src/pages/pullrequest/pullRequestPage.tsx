@@ -26,11 +26,9 @@ const PullRequestPage = () => {
         setPositions((prev) => {
           const newPositions = [...prev];
           newPositions[i] = childTop + childHeight / 2;
-          console.log(newPositions);
           return newPositions;
         });
       }
-      console.log(positions);
     }
     if (snippetContainerRef.current) {
       setRightDivHeight(`${snippetContainerRef.current.offsetHeight}px`);

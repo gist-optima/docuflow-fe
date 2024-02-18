@@ -24,14 +24,21 @@ const GenerateContainerModal = ({
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const data = await generateContainers({
-      queryKey: [
-        QueryKey.GenerateContainer,
-        {
-          title: e.currentTarget.titleInput.value,
-        },
-      ],
-    });
+    const data = await toast.promise(
+      generateContainers({
+        queryKey: [
+          QueryKey.GenerateContainer,
+          {
+            title: e.currentTarget.titleInput.value,
+          },
+        ],
+      }),
+      {
+        loading: "컨테이너 생성 중...",
+        success: "컨테이너 생성 완료",
+        error: "컨테이너 생성 실패",
+      },
+    );
 
     setContainers(data);
   };
